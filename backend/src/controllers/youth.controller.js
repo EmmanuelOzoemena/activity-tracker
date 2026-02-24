@@ -3,7 +3,7 @@ const Youth = require("../models/youth.model");
 // Create a new youth
 const createYouth = async (req, res) => {
   try {
-    const { name, dob } = req.body;
+    const { name, dob, liturgicalGroup } = req.body;
 
     const youth = new Youth({ name, dob });
     await youth.save();
@@ -63,11 +63,11 @@ const deleteYouth = async (req, res) => {
 const updateYouth = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, dob } = req.body;
+    const { name, dob, liturgicalGroup } = req.body;
 
     const updatedYouth = await Youth.findByIdAndUpdate(
       id,
-      { name, dob },
+      { name, dob, liturgicalGroup },
       { new: true }
     );
 

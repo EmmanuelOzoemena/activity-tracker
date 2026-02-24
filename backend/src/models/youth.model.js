@@ -13,10 +13,20 @@ const youthSchema = new Schema(
       type: Date,
       required: true,
     },
+
+    liturgicalGroup: {
+      type: String,
+      required: true,
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
-  
-  { 
-    timestamps: true 
+
+  {
+    timestamps: true,
   },
 );
 
