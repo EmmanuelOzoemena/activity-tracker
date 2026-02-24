@@ -1,6 +1,8 @@
+dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
+const youthRoutes = require("./routes/youth.routes")
 
 const app = express();
 
@@ -26,4 +28,6 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Welcome to the Activity Tracker API");
 });
+
+app.use("/youths", youthRoutes);
 
