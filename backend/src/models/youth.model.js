@@ -21,7 +21,7 @@ const youthSchema = new Schema(
 
     isActive: {
       type: Boolean,
-      default: true,
+      // default: true,
     },
   },
 

@@ -5,7 +5,7 @@ const createYouth = async (req, res) => {
   try {
     const { name, dob, liturgicalGroup } = req.body;
 
-    const youth = new Youth({ name, dob });
+    const youth = new Youth({ name, dob, liturgicalGroup });
     await youth.save();
     res.status(201).json(youth);
   } catch (error) {
