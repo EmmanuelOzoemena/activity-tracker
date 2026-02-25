@@ -3,8 +3,9 @@ dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
 
-const youthRoutes = require("./routes/youth.routes")
-const activityRoutes = require("./routes/activity.routes")
+const youthRoutes = require("./routes/youth.routes");
+const activityRoutes = require("./routes/activity.routes");
+const attendanceRoutes = require("./routes/attendance.routes");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Activity Tracker API");
 });
 
+// Routes
 app.use("/youths", youthRoutes);
 app.use("/activities", activityRoutes);
-
+app.use("/attendance", attendanceRoutes);
