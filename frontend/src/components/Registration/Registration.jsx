@@ -1,28 +1,60 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerYouth } from "../../apis/auth";
 import "./Registration.css";
+import { toast } from "react-toastify";
 
 const Registration = () => {
-  // Local state to hold form data
-  const [formData, setFormData] = useState({
-    name: "",
-    dob: "",
-    gender: "male",
-    liturgicalGroup: "",
-    phoneNumber: "",
-  });
+  const [name, setName] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("male");
+  const [liturgicalGroup, setLiturgicalGroup] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data captured:", formData);
-    alert("Ready for API integration!");
-    // This is where you will add your fetch/axios POST request later
+    console.log("Form data captured:", {
+      name,
+      dob,
+      gender,
+      liturgicalGroup,
+      phoneNumber,
+    });
+
+    if (!name || !dob || !gender || !liturgicalGroup || !phoneNumber) {
+      return;
+    }
+
+    try {
+      const response = await registerYouth(
+        name,
+        dob,
+        gender,
+        liturgicalGroup,
+        phoneNumber,
+      );
+
+      if (response?.status === 201) {
+        // alert("Registration Successful");
+
+        const youthId = response.data._id || response.data.id;
+
+        localStorage.setItem("youthId", youthId);
+
+        toast.success("Registration Successful!");
+
+        setTimeout(() => navigate("/"), 1500);
+      } else {
+        toast.error(
+          "Registration Failed. Please check your details and try again.",
+        );
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+      console.error("Registration error:", error);
+    }
   };
 
   return (
@@ -40,8 +72,8 @@ const Registration = () => {
               type="text"
               name="name"
               placeholder="e.g. Ozoemena Chukwuebuka"
-              value={formData.name}
-              onChange={handleChange}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
@@ -52,8 +84,8 @@ const Registration = () => {
               type="date"
               name="dob"
               placeholder="Enter date of birth"
-              value={formData.dob}
-              onChange={handleChange}
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
               required
             />
           </div>
@@ -63,8 +95,8 @@ const Registration = () => {
               <label>Gender</label>
               <select
                 name="gender"
-                value={formData.gender}
-                onChange={handleChange}
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -78,8 +110,8 @@ const Registration = () => {
                 type="text"
                 name="liturgicalGroup"
                 placeholder="e.g. Altar Servers"
-                value={formData.liturgicalGroup}
-                onChange={handleChange}
+                value={liturgicalGroup}
+                onChange={(e) => setLiturgicalGroup(e.target.value)}
                 required
               />
             </div>
@@ -91,8 +123,8 @@ const Registration = () => {
               type="tel"
               name="phoneNumber"
               placeholder="080XXXXXXXX"
-              value={formData.phoneNumber}
-              onChange={handleChange}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
 
