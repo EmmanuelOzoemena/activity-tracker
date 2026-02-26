@@ -1,0 +1,140 @@
+/* Container Spacing */
+.dashboard-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+  color: #333;
+}
+
+/* Banner Styling */
+.registration-banner {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+}
+
+.banner-text h3 {
+  margin: 0 0 5px 0;
+}
+.banner-text p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.register-btn {
+  background: white;
+  color: #4f46e5;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.register-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Profile Section */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid #e2e8f0;
+}
+
+.avatar {
+  font-size: 40px;
+  background: #e2e8f0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Leaderboard Table */
+.stats-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr;
+  padding: 15px 20px;
+  background: #f1f5f9;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  align-items: center;
+}
+
+.rank-number {
+  color: #94a3b8;
+  font-weight: bold;
+}
+.youth-name {
+  font-weight: 500;
+}
+.youth-points {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .registration-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  .table-header,
+  .table-row {
+    font-size: 0.8rem;
+  }
+}
