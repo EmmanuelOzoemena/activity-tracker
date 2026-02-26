@@ -25,6 +25,11 @@ const youthSchema = new Schema(
       required: true,
     },
 
+    phoneNumber: {
+      type: String,
+      // required: true,
+    },
+
     isActive: {
       type: Boolean,
       // default: true,
