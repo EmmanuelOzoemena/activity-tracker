@@ -69,30 +69,24 @@ const allAttendances = async (req, res) => {
 // Update attendance for a youth in an activity
 const updateAttendance = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { status } = req.body;
+    const { status, youthId, activityId } = req.body; // Get these from body instead of params
 
-    // Validate attendance status
-    if (!["present", "absent", "excused"].includes(status)) {
-      return res.status(400).json({ error: "Invalid attendance status" });
-    }
-
-    const updatedAttendance = await Attendance.findByIdAndUpdate(
-      id,
+    const updatedAttendance = await Attendance.findOneAndUpdate(
+      { youth: youthId, activity: activityId }, // Find the record that matches both
       { status },
-      { new: true, runValidators: true },
+      { new: true, runValidators: true }
     );
 
     if (!updatedAttendance) {
-      return res.status(404).json({ error: "Attendance record not found" });
+      return res.status(404).json({ error: "Record not found" });
     }
 
     res.json(updatedAttendance);
   } catch (error) {
-    console.error("Error updating attendance:", error);
-    res.status(500).json({ error: "Failed to update attendance" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 module.exports = {
   addAttendance,
