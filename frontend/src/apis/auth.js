@@ -110,3 +110,16 @@ export const updateAttendance = async (id, status) => {
     return error?.response;
   }
 };
+
+// Stats calculation for a given month and year
+export const getTotalStats = async (month, year) => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/stats/monthly`, {  
+      params: { month, year },
+    });
+    return res;
+  } catch (error) {
+    console.error("ERROR fetching monthly stats:", error);
+    return error?.response;
+  } 
+};

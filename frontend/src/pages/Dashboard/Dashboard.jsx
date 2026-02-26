@@ -3,44 +3,22 @@ import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import { getYouthById } from "../../apis/auth";
 import { toast } from "react-toastify";
+import { getTotalStats } from "../../apis/auth";
 
 const Dashboard = () => {
   // Mock data to visualize how your backend JSON will look in the UI
-  const [rankings] = useState([
-    {
-      name: "Ozoemena Chukwuebuka",
-      totalPoints: 100,
-      totalActivities: 2,
-      percentage: 50,
-    },
-
-    {
-      name: "Ibeh Chioma",
-      totalPoints: 400,
-      totalActivities: 4,
-      percentage: 100,
-    },
-
-    {
-      name: "Raphael Anthony",
-      totalPoints: 100,
-      totalActivities: 2,
-      percentage: 75,
-    },
-
-    { name: "Olije Abel", totalPoints: 0, totalActivities: 2, percentage: 0 },
-  ]);
+  const [rankings, setRankings] = useState([]);
 
   const [userBio, setUserBio] = useState(null);
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
+  useEffect(() => {
     const fetchUserBio = async () => {
-      const savedId = localStorage.getItem('youthId');
-      
+      const savedId = localStorage.getItem("youthId");
+
       if (!savedId) {
         setLoading(false);
-        return; 
+        return;
       }
 
       try {
@@ -60,8 +38,36 @@ const Dashboard = () => {
       }
     };
 
+    const fetchStats = async () => {
+      // Get current month (1-12) and year
+      const now = new Date();
+      const currentMonth = now.getMonth() + 1;
+      const currentYear = now.getFullYear();
+
+      try {
+        const response = await getTotalStats(currentMonth, currentYear);
+
+        if (response?.status === 200) {
+          // IMPORTANT: Your backend should return the list already sorted by points
+          // If not, we can sort it here:
+          const sortedData = response.data.sort(
+            (a, b) => b.totalPoints - a.totalPoints,
+          );
+          setRankings(sortedData);
+        }
+      } catch (error) {
+        console.error("Failed to fetch rankings", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
     fetchUserBio();
-  }, []); 
+  }, []);
+
+  if (loading)
+    return <div className="loading-state">Updating Leaderboard...</div>;
 
   if (loading) return <div className="loader">Loading Dashboard...</div>;
 
@@ -89,8 +95,7 @@ const Dashboard = () => {
           </Link>
         </div>
       )}
-
-      ;{/* 2. User Profile Summary */}
+      ;{/* User Profile Summary */}
       <section className="profile-section">
         <div className="profile-card">
           <div className="avatar">👤</div>
@@ -100,12 +105,14 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-
-      {/* 3. Leaderboard / Stats */}
+      {/* Leaderboard / Stats */}
       <section className="stats-section">
         <div className="section-header">
-          <h3>Ranked Animators Activeness</h3>
-          <span className="badge">Monthly Stats</span>
+          <h3>Ranked Youth Activeness</h3>
+          <span className="badge">
+            {new Date().toLocaleString("default", { month: "long" })}{" "}
+            {new Date().getFullYear()}
+          </span>
         </div>
 
         <div className="leaderboard-table">
@@ -116,14 +123,28 @@ const Dashboard = () => {
             <span>Activity %</span>
           </div>
 
-          {rankings.map((youth, index) => (
-            <div className="table-row" key={index}>
-              <span className="rank-number">#{index + 1}</span>
-              <span className="youth-name">{youth.name}</span>
-              <span className="youth-points">{youth.totalPoints} pts</span>
-              <span className="youth-percent">{youth.percentage}%</span>
+          {rankings.length > 0 ? (
+            rankings.map((youth, index) => (
+              <div className="table-row" key={youth.id || index}>
+                <span className="rank-number">
+                  {index === 0
+                    ? "🥇"
+                    : index === 1
+                      ? "🥈"
+                      : index === 2
+                        ? "🥉"
+                        : `#${index + 1}`}
+                </span>
+                <span className="youth-name">{youth.name}</span>
+                <span className="youth-points">{youth.totalPoints} pts</span>
+                <span className="youth-percent">{youth.percentage}%</span>
+              </div>
+            ))
+          ) : (
+            <div className="p-4 text-center text-gray-500">
+              No activity recorded for this month.
             </div>
-          ))}
+          )}
         </div>
       </section>
     </div>
