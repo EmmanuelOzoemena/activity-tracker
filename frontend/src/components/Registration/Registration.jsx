@@ -15,13 +15,13 @@ const Registration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data captured:", {
-      name,
-      dob,
-      gender,
-      liturgicalGroup,
-      phoneNumber,
-    });
+    // console.log("Form data captured:", {
+    //   name,
+    //   dob,
+    //   gender,
+    //   liturgicalGroup,
+    //   phoneNumber,
+    // });
 
     if (!name || !dob || !gender || !liturgicalGroup || !phoneNumber) {
       return;
