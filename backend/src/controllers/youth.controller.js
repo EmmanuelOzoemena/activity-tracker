@@ -3,9 +3,9 @@ const Youth = require("../models/youth.model");
 // Create a new youth
 const createYouth = async (req, res) => {
   try {
-    const { name, dob, liturgicalGroup } = req.body;
+    const { name, dob, liturgicalGroup, gender, phoneNumber } = req.body;
 
-    const youth = new Youth({ name, dob, liturgicalGroup });
+    const youth = new Youth({ name, dob, liturgicalGroup, gender, phoneNumber });
     await youth.save();
     res.status(201).json(youth);
   } catch (error) {
@@ -63,11 +63,11 @@ const deleteYouth = async (req, res) => {
 const updateYouth = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, dob, liturgicalGroup } = req.body;
+    const { name, dob, liturgicalGroup, gender, phoneNumber } = req.body;
 
     const updatedYouth = await Youth.findByIdAndUpdate(
       id,
-      { name, dob, liturgicalGroup },
+      { name, dob, liturgicalGroup, gender, phoneNumber },
       { new: true }
     );
 
