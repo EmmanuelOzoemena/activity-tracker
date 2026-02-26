@@ -1,6 +1,6 @@
 exports.getScore = (status) => {
   if (status === "present") return 100;
-  if (status === "absent") return 50;
+  if (status === "excused") return 50;
 
   return 0;
 };
