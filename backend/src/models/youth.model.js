@@ -14,6 +14,12 @@ const youthSchema = new Schema(
       required: true,
     },
 
+    gender: {
+      type: String,
+      enum: ["male", "female", "other"],
+      required: true,
+    },
+
     liturgicalGroup: {
       type: String,
       required: true,
