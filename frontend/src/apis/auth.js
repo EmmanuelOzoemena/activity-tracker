@@ -5,6 +5,7 @@ const API_BASE_URL = "http://localhost:3330";
 // Register Youth
 export const registerYouth = async (
   name,
+  email,
   dob,
   gender,
   liturgicalGroup,
@@ -13,6 +14,7 @@ export const registerYouth = async (
   try {
     const res = await axios.post(`${API_BASE_URL}/youths`, {
       name,
+      email,
       dob,
       gender,
       liturgicalGroup,

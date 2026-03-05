@@ -2,6 +2,7 @@ dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
 const cors = require("cors");
 
 const youthRoutes = require("./routes/youth.routes");
@@ -11,8 +12,11 @@ const statRoutes = require("./routes/stat.routes");
 
 const app = express();
 
-app.use(express.json());
+
+app.use(helmet())
 app.use(cors());
+app.use(express.json());
+
 // Mongoose connection
 const port = process.env.PORT || 3000;
 const dbURI = process.env.dbURI;

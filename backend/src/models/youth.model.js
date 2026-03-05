@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcryptjs');
 
 const Schema = mongoose.Schema;
 
@@ -11,6 +12,17 @@ const youthSchema = new Schema(
 
     dob: {
       type: Date,
+      required: true,
+    },
+
+    email: { 
+      type: String, 
+      required: true, 
+      unique: true 
+    },
+
+    password: {
+      type: String,
       required: true,
     },
 
@@ -40,6 +52,12 @@ const youthSchema = new Schema(
     timestamps: true,
   },
 );
+
+youthSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  // next();
+});
 
 const Youth = mongoose.model("Youth", youthSchema);
 

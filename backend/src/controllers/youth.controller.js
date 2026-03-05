@@ -1,16 +1,62 @@
 const Youth = require("../models/youth.model");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // Create a new youth
 const createYouth = async (req, res) => {
   try {
-    const { name, dob, liturgicalGroup, gender, phoneNumber } = req.body;
+    const { name, email, password, dob, liturgicalGroup, gender, phoneNumber } =
+      req.body;
 
-    const youth = new Youth({ name, dob, liturgicalGroup, gender, phoneNumber });
+    // Check if email already exists
+    const existingYouth = await Youth.findOne({ email });
+
+    if (existingYouth) {
+      return res.status(400).json({
+        message: "This email is already registered. Please login instead.",
+      });
+    }
+
+    const youth = new Youth({
+      name,
+      email,
+      password,
+      dob,
+      liturgicalGroup,
+      gender,
+      phoneNumber,
+    });
+
     await youth.save();
     res.status(201).json(youth);
   } catch (error) {
     console.error("Error creating youth:", error);
     res.status(500).json({ error: "Failed to create youth" });
+  }
+};
+
+// Login youth
+const loginYouth = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const youth = await Youth.findOne({ email });
+
+    if (!youth) {
+      return res.status(404).json({ error: "Youth not found" });
+    }
+    const isMatch = await bcrypt.compare(password, youth.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    } else {
+      const token = jwt.sign({ id: youth._id }, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+      });
+      res.status(200).json({ token, youthId: youth._id });
+    }
+  } catch (error) {
+    console.error("Error logging in youth:", error);
+    res.status(500).json({ error: "Failed to log in youth" });
   }
 };
 
@@ -68,7 +114,7 @@ const updateYouth = async (req, res) => {
     const updatedYouth = await Youth.findByIdAndUpdate(
       id,
       { name, dob, liturgicalGroup, gender, phoneNumber },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedYouth) {
@@ -84,6 +130,7 @@ const updateYouth = async (req, res) => {
 
 module.exports = {
   createYouth,
+  loginYouth,
   allYouths,
   getYouthById,
   deleteYouth,

@@ -6,12 +6,18 @@ import { toast } from "react-toastify";
 
 const Registration = () => {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("male");
   const [liturgicalGroup, setLiturgicalGroup] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const navigate = useNavigate();
+
+  // Calculate the maximum allowed date (15 years ago today)
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() - 15);
+  const maxDateString = maxDate.toISOString().split("T")[0];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,13 +29,21 @@ const Registration = () => {
     //   phoneNumber,
     // });
 
-    if (!name || !dob || !gender || !liturgicalGroup || !phoneNumber) {
+    if (
+      !name ||
+      !email ||
+      !dob ||
+      !gender ||
+      !liturgicalGroup ||
+      !phoneNumber
+    ) {
       return;
     }
 
     try {
       const response = await registerYouth(
         name,
+        email,
         dob,
         gender,
         liturgicalGroup,
@@ -79,12 +93,25 @@ const Registration = () => {
           </div>
 
           <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
             <label>Date of Birth</label>
             <input
               type="date"
               name="dob"
               placeholder="Enter date of birth"
               value={dob}
+              max={maxDateString}
               onChange={(e) => setDob(e.target.value)}
               required
             />
@@ -128,12 +155,17 @@ const Registration = () => {
             />
           </div>
 
+          <div className="reg-footer-links">
+            <span>Already have an account?</span>
+            <Link to="/login" className="signup-link">
+              {" "}
+              Sign in here
+            </Link>
+          </div>
+
           <button type="submit" className="submit-btn">
             Complete Registration
           </button>
-          <Link to="/" className="cancel-btn">
-            Back to Dashboard
-          </Link>
         </form>
       </div>
     </div>

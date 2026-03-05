@@ -120,7 +120,7 @@ const Dashboard = () => {
             <span>Rank</span>
             <span>Name</span>
             <span>Points</span>
-            <span>Activity %</span>
+            <span>Activeness %</span>
           </div>
 
           {rankings.length > 0 ? (

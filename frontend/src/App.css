@@ -9,3 +9,21 @@
 body {
   font-family: "Space Grotesk", sans-serif;
 }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-layout {
+  display: flex; /* Sidebar on left, Content on right */
+  flex: 1;
+}
+
+.content-area {
+  flex: 1; /* Takes up remaining space */
+  background-color: #f8fafc;
+  /* padding: 30px; */
+  overflow-y: auto;
+}

@@ -4,6 +4,7 @@ const router = express.Router();
 
 const {
   createYouth,
+  loginYouth,
   allYouths,
   getYouthById, 
   deleteYouth,
@@ -11,6 +12,7 @@ const {
 } = require("../controllers/youth.controller");
 
 router.post("/", createYouth); // to create a youth
+router.post("/login", loginYouth);
 router.get("/", allYouths); // to get all youths
 router.get("/:id", getYouthById); // to get a youth by ID
 router.delete("/:id", deleteYouth); // to delete a youth by ID
