@@ -6,6 +6,7 @@ const API_BASE_URL = "http://localhost:3330";
 export const registerYouth = async (
   name,
   email,
+  password,
   dob,
   gender,
   liturgicalGroup,
@@ -15,6 +16,7 @@ export const registerYouth = async (
     const res = await axios.post(`${API_BASE_URL}/youths`, {
       name,
       email,
+      password,
       dob,
       gender,
       liturgicalGroup,
@@ -27,6 +29,22 @@ export const registerYouth = async (
     return error?.response;
   }
 };
+
+// Login Youth
+export const loginYouth = async (email, password) => {
+  try {
+    const res = await axios.post(`${API_BASE_URL}/youths/login`, { email, password });
+    
+    if (res.data.token) {
+      localStorage.setItem('token', res.data.token); // Save token for future requests
+      localStorage.setItem('user', JSON.stringify(res.data.user)); // Save user info
+    }
+    return res;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 
 // Get a single youth by ID
 export const getYouthById = async (id) => {

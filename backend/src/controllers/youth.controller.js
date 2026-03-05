@@ -49,10 +49,17 @@ const loginYouth = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid credentials" });
     } else {
-      const token = jwt.sign({ id: youth._id }, process.env.JWT_SECRET, {
-        expiresIn: "1d",
+      const token = jwt.sign(
+        { id: youth._id, role: youth.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" },
+      );
+
+      res.status(200).json({
+        token,
+        youthId: youth._id,
+        role: youth.role,
       });
-      res.status(200).json({ token, youthId: youth._id });
     }
   } catch (error) {
     console.error("Error logging in youth:", error);

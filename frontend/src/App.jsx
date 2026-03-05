@@ -8,6 +8,7 @@ import AdminPanel from "./pages/Admin/AdminPanel";
 import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Login from "./components/Login/Login";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   const location = useLocation();
@@ -39,7 +40,15 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
 
-            <Route path="/admin" element={<AdminPanel />} />
+            {/* <Route path="/admin" element={<AdminPanel />} /> */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminPanel />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
 
           <ToastContainer position="top-right" autoClose={3000} />

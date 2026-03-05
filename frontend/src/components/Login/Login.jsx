@@ -1,18 +1,46 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { toast } from "react-toastify";
+import { loginYouth } from "../../apis/auth";
+
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    toast.info("Connecting to backend soon...");
+
+    try {
+      const response = await loginYouth(email, password);
+
+      if (response?.status === 200) {
+        const { token, youthId, role } = response.data;
+
+        // Saving to localStorage
+        localStorage.setItem("token", token);
+        localStorage.setItem("youthId", youthId);
+        localStorage.setItem("role", role); // This is the key for our ProtectedRoute
+
+        toast.success("Welcome back!");
+
+        // Redirect based on role
+        if (role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+      } else {
+        toast.error(response?.data?.error || "Invalid Credentials");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+      console.error("Registration error:", error);
+    }
   };
 
   return (
@@ -30,7 +58,7 @@ const Login = () => {
               <FiMail className="input-icon" />
               <input
                 type="email"
-                placeholder="admin@church.com"
+                placeholder="email@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

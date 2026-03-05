@@ -42,10 +42,11 @@ const youthSchema = new Schema(
       // required: true,
     },
 
-    isActive: {
-      type: Boolean,
-      // default: true,
-    },
+   role: {
+    type: String,
+    enum: ['youth', 'admin'],
+    default: 'youth'
+  }
   },
 
   {

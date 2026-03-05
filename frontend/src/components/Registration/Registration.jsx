@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerYouth } from "../../apis/auth";
+import { FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import "./Registration.css";
 import { toast } from "react-toastify";
 
 const Registration = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("male");
   const [liturgicalGroup, setLiturgicalGroup] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,6 +36,7 @@ const Registration = () => {
       !name ||
       !email ||
       !dob ||
+      !password ||
       !gender ||
       !liturgicalGroup ||
       !phoneNumber
@@ -44,6 +48,7 @@ const Registration = () => {
       const response = await registerYouth(
         name,
         email,
+        password,
         dob,
         gender,
         liturgicalGroup,
@@ -92,29 +97,52 @@ const Registration = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Date of Birth</label>
+              <input
+                type="date"
+                name="dob"
+                placeholder="Enter date of birth"
+                value={dob}
+                max={maxDateString}
+                onChange={(e) => setDob(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>Date of Birth</label>
-            <input
-              type="date"
-              name="dob"
-              placeholder="Enter date of birth"
-              value={dob}
-              max={maxDateString}
-              onChange={(e) => setDob(e.target.value)}
-              required
-            />
+            <label>Password</label>
+            <div className="input-wrapper">
+              <FiLock className="input-icon" />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
           </div>
 
           <div className="form-row">
