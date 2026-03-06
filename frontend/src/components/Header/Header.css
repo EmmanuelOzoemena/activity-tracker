@@ -46,6 +46,7 @@
 
 /* Mobile responsiveness */
 @media (max-width: 600px) {
-  .main-header { padding: 0 20px; }
-  .logo-text { display: none; } /* Show only icon on small screens */
+  .main-header {
+    padding: 0 20px;
+  }
 }

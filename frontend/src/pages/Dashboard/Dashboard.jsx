@@ -4,6 +4,7 @@ import "./Dashboard.css";
 import { getYouthById } from "../../apis/auth";
 import { toast } from "react-toastify";
 import { getTotalStats } from "../../apis/auth";
+import { FiUser } from "react-icons/fi"; // or FiUserCircle
 
 const Dashboard = () => {
   // Mock data to visualize how your backend JSON will look in the UI
@@ -75,7 +76,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
       {userBio ? (
         <div className="profile-card bio-highlight">
-          <div className="avatar">✅</div>
+          {/* <div className="avatar">✅</div> */}
           <div className="profile-info">
             <h2>Hi, {userBio.name}!</h2>
             {/* <p>Your ID: {userBio._id}</p> */}
@@ -95,10 +96,13 @@ const Dashboard = () => {
           </Link>
         </div>
       )}
-      ;{/* User Profile Summary */}
+      {/* User Profile Summary */}
       <section className="profile-section">
         <div className="profile-card">
-          <div className="avatar">👤</div>
+          {/* <div className="avatar">👤</div> */}
+          <div className="avatar-wrapper">
+            <FiUser className="avatar-icon" />
+          </div>
           <div className="profile-info">
             <h2>Welcome back!</h2>
             <p>Check the leaderboard below to see your standing this month.</p>

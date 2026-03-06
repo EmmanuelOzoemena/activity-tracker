@@ -66,6 +66,28 @@
   border-radius: 50%;
 }
 
+.avatar-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e2e8f0; /* Light gray background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #cbd5e1;
+  transition: all 0.3s ease;
+}
+
+.avatar-icon {
+  font-size: 1.4rem;
+  color: #64748b; /* Slate gray icon */
+}
+
+.admin-status .avatar-wrapper {
+  border-color: #4f46e5;
+  background-color: #eef2ff;
+}
+
 .profile-info h2 {
   margin: 0;
   font-size: 1.5rem;
