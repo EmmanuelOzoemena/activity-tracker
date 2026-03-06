@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3330";
+const API_BASE_URL = "https://api-activity-tracker.onrender.com";
 
 // Register Youth
 export const registerYouth = async (
