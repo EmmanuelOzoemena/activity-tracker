@@ -13,10 +13,10 @@ const statRoutes = require("./routes/stat.routes");
 const app = express();
 
 
-app.use(helmet())
+app.use(helmet());
 const allowedOrigins = [
   'http://localhost:5173', 
-  // 'https://your-app-name.vercel.app'
+  'https://cchs-activity-tracker.vercel.app'
 ];
 
 app.use(cors({
