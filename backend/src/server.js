@@ -9,6 +9,7 @@ const youthRoutes = require("./routes/youth.routes");
 const activityRoutes = require("./routes/activity.routes");
 const attendanceRoutes = require("./routes/attendance.routes");
 const statRoutes = require("./routes/stat.routes");
+const skillRoutes = require("./routes/skill.routes")
 
 const app = express();
 
@@ -62,3 +63,4 @@ app.use("/youths", youthRoutes);
 app.use("/activities", activityRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/stats", statRoutes);
+app.use("/skill", skillRoutes);
