@@ -33,11 +33,14 @@ export const registerYouth = async (
 // Login Youth
 export const loginYouth = async (email, password) => {
   try {
-    const res = await axios.post(`${API_BASE_URL}/youths/login`, { email, password });
-    
+    const res = await axios.post(`${API_BASE_URL}/youths/login`, {
+      email,
+      password,
+    });
+
     if (res.data.token) {
-      localStorage.setItem('token', res.data.token); // Save token for future requests
-      localStorage.setItem('user', JSON.stringify(res.data.user)); // Save user info
+      localStorage.setItem("token", res.data.token); // Save token for future requests
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // Save user info
     }
     return res;
   } catch (error) {
@@ -45,6 +48,32 @@ export const loginYouth = async (email, password) => {
   }
 };
 
+export const skillRegistration = async (data) => {
+  try {
+    // Create FormData instance
+    const formData = new FormData();
+
+    formData.append("firstName", data.firstName);
+    formData.append("lastName", data.lastName);
+    formData.append("email", data.email);
+    formData.append("dob", data.dob);
+    // formData.append("gender", data.gender);
+    formData.append("skillType", data.skillType);
+    formData.append("phoneNumber", data.phoneNumber);
+    // Append the file (The key 'receipt' must match upload.single('receipt') on backend)
+    formData.append("receipt", data.receipt);
+
+    const res = await axios.post(`${API_BASE_URL}/skill`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    return error.message;
+  }
+};
 
 // Get a single youth by ID
 export const getYouthById = async (id) => {
@@ -120,7 +149,7 @@ export const markAttendance = async (youthId, activityId, status) => {
   }
 };
 
-// Update attendance status for a youth in an 
+// Update attendance status for a youth in an
 export const updateAttendance = async (id, status) => {
   try {
     const res = await axios.put(`${API_BASE_URL}/attendance/${id}`, { status });
@@ -134,12 +163,12 @@ export const updateAttendance = async (id, status) => {
 // Stats calculation for a given month and year
 export const getTotalStats = async (month, year) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/stats/monthly`, {  
+    const res = await axios.get(`${API_BASE_URL}/stats/monthly`, {
       params: { month, year },
     });
     return res;
   } catch (error) {
     console.error("ERROR fetching monthly stats:", error);
     return error?.response;
-  } 
+  }
 };

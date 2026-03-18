@@ -1,0 +1,77 @@
+.skill-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.skill-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.skill-card h2 {
+    text-align: center;
+}
+
+.skill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.skill-form input,
+.skill-form select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.file-upload {
+  position: relative;
+  border: 2px dashed #4f46e5;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.file-upload:hover {
+  background: #f5f3ff;
+}
+
+.file-upload input {
+  display: none; /* Hide the ugly default button */
+}
+
+.file-label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4f46e5;
+}
+
+.upload-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.submit-btn {
+  background: #4f46e5;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background: #94a3b8;
+}
