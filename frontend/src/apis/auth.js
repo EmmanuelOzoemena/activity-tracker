@@ -63,7 +63,7 @@ export const skillRegistration = async (data) => {
     // Append the file (The key 'receipt' must match upload.single('receipt') on backend)
     formData.append("receipt", data.receipt);
 
-    const res = await axios.post(`${API_BASE_URL}/skill`, formData, {
+    const res = await axios.post(`https://api-activity-tracker.onrender.com/skill`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

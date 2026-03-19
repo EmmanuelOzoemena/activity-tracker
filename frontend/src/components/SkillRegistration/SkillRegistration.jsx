@@ -128,7 +128,7 @@ const SkillRegistration = () => {
             <option value="">Select a Skill</option>
             <option value="Web Designs">Web Designs</option>
             <option value="UI/UX Design">UI/UX Design</option>
-            <option value="Music">Catering</option>
+            <option value="Music">Music</option>
           </select>
 
           <div className="file-upload">
