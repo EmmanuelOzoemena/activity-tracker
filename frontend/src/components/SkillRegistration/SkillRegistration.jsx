@@ -4,6 +4,7 @@ import { skillRegistration } from "../../apis/auth";
 import { toast } from "react-toastify";
 import { FiUploadCloud, FiCheckCircle } from "react-icons/fi";
 import "./SkillRegistration.css";
+import SuccessModal from "./SuccessModal";
 
 const SkillRegistration = () => {
   const [firstName, setFirstName] = useState("");
@@ -15,6 +16,8 @@ const SkillRegistration = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [receipt, setReceipt] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [registeredName, setRegisteredName] = useState("");
 
   const handleFileChange = (e) => {
     setReceipt(e.target.files[0]);
@@ -23,8 +26,17 @@ const SkillRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!receipt) {
-      return toast.error("Please upload a payment receipt");
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !dob ||
+      !gender ||
+      !skillType ||
+      !phoneNumber ||
+      !receipt
+    ) {
+      return toast.error("All fields are required");
     }
 
     setLoading(true);
@@ -38,12 +50,24 @@ const SkillRegistration = () => {
         // gender,
         skillType,
         phoneNumber,
-        receipt, 
+        receipt,
       };
 
       const response = await skillRegistration(registrationData);
 
       if (response?.status === 201) {
+        setRegisteredName(firstName);
+        setIsModalOpen(true);
+
+        // Clear form fields
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setDob("");
+        setGender("");
+        setSkillType("");
+        setPhoneNumber("");
+        setReceipt(null);
         toast.success("Registration Successful!");
       }
     } catch (error) {
@@ -62,74 +86,99 @@ const SkillRegistration = () => {
         <h2>Don Bosco Weekend Skills Registration</h2>
         {/* <p>Join us this Sunday to learn a new craft!</p> */}
 
-        <form onSubmit={handleSubmit} className="skill-form">
-          <input
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
+        <form onSubmit={handleSubmit} className="skill-form" noValidate>
+          <div className="input-group">
+            <label className="field-label">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="e.g. Emmanuel"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
+          <div className="input-group">
+            <label className="field-label">Last Name</label>
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div className="input-group">
+            <label className="field-label">Email Address</label>
 
-          <input
-            type="date"
-            name="dob"
-            // placeholder=""
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            required
-          />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-          <select
-            name="gender"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            required
-          >
-            <option value="">Select your gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+          <div className="input-group">
+            <label className="field-label">Date of Birth</label>
+            <input
+              type="date"
+              name="dob"
+              // placeholder=""
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            type="text"
-            name="phoneNumber"
-            placeholder="Phone Number"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
+          <div className="input-group">
+            <label className="field-label">Gender</label>
+            <select
+              name="gender"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              required
+            >
+              <option value="">Select your gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
 
-          <select
-            name="skillType"
-            value={skillType}
-            onChange={(e) => setSkillType(e.target.value)}
-            required
-          >
-            <option value="">Select a Skill</option>
-            <option value="Web Designs">Web Designs</option>
-            <option value="UI/UX Design">UI/UX Design</option>
-            <option value="Music">Music</option>
-          </select>
+          <div className="input-group">
+            <label className="field-label">Phone Number</label>
+
+            <input
+              type="text"
+              name="phoneNumber"
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label className="field-label">Skill to learn</label>
+
+            <select
+              name="skillType"
+              value={skillType}
+              onChange={(e) => setSkillType(e.target.value)}
+              required
+            >
+              <option value="">Select a Skill</option>
+              <option value="Web Designs">Web Designs</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Music">Music</option>
+            </select>
+          </div>
 
           <div className="file-upload">
             <label htmlFor="receipt-upload" className="file-label">
@@ -150,6 +199,12 @@ const SkillRegistration = () => {
           </button>
         </form>
       </div>
+
+      <SuccessModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        name={registeredName}
+      />
     </div>
   );
 };
