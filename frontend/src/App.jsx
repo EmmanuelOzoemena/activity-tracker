@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLocation, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Registration from "./components/Registration/Registration";
@@ -12,11 +13,15 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import SkillRegistration from "./components/SkillRegistration/SkillRegistration";
 import RegDetails from "./components/RegDetails/RegDetails";
 
+
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
 
   const standalonePages = ["/login", "/register", "/skill-registration"];
   const isStandalone = standalonePages.includes(location.pathname);
+
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   if (isStandalone) {
     return (
@@ -34,10 +39,10 @@ function App() {
 
   return (
     <div className="app-wrapper">
-      <Header />
+  <Header toggleSidebar={toggleSidebar} />
 
       <div className="main-layout">
-        <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
         <main className="content-area">
           <Routes>
