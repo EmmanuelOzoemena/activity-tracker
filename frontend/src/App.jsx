@@ -10,6 +10,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Login from "./components/Login/Login";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import SkillRegistration from "./components/SkillRegistration/SkillRegistration";
+import RegDetails from "./components/RegDetails/RegDetails";
 
 function App() {
   const location = useLocation();
@@ -41,8 +42,7 @@ function App() {
         <main className="content-area">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-          {/* <Route path="/skill-registration" element={<SkillRegistration />} /> */}
-
+            {/* <Route path="/skill-registration" element={<SkillRegistration />} /> */}
 
             {/* <Route path="/admin" element={<AdminPanel />} /> */}
             <Route
@@ -50,6 +50,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["admin"]}>
                   <AdminPanel />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/registrations"
+              element={
+                <ProtectedRoute role="admin">
+                  <RegDetails />
                 </ProtectedRoute>
               }
             />

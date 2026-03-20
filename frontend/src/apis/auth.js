@@ -48,6 +48,7 @@ export const loginYouth = async (email, password) => {
   }
 };
 
+// Register for a skill
 export const skillRegistration = async (data) => {
   try {
     // Create FormData instance
@@ -72,6 +73,18 @@ export const skillRegistration = async (data) => {
     return res;
   } catch (error) {
     return error.message;
+  }
+};
+
+// Get all skill registration details
+export const getAllRegistrations = async () => {
+  try {
+    const res = await axios.get(`https://api-activity-tracker.onrender.com/skill`);
+  
+    return Array.isArray(res.data) ? res.data : res.data.data; 
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    return []; 
   }
 };
 
