@@ -26,7 +26,7 @@ const skillRegistrationSchema = new Schema(
     skillType: {
       type: String,
       required: true,
-      enum: ["Web Designs", "UI/UX Design", "Music"],
+      enum: ["Web Designs", "UI/UX Design", "Music", "Hair making", "Catering", "Fashion design"],
     },
 
     phoneNumber: {
