@@ -49,7 +49,6 @@
   display: none; /* Hide the ugly default button */
 }
 
-
 /* Container to keep label and input stacked */
 .input-group {
   display: flex;
@@ -125,6 +124,83 @@
   width: 90%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.3s ease-out;
+}
+
+.payment-info-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.payment-info-card h3 {
+  font-size: 1rem;
+  color: #1e293b;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 5px;
+}
+
+.amount-text {
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 10px;
+}
+
+.amount-text span {
+  color: #10b981; /* Green for the price */
+  font-size: 1.1rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.detail-row .label {
+  color: #64748b;
+  flex: 1;
+}
+
+.detail-row .value {
+  color: #1e293b;
+  font-weight: 700;
+  flex: 2;
+  text-align: right;
+}
+
+.copy-row {
+  align-items: center;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px dashed #94a3b8;
+}
+
+.copy-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.copy-box:hover {
+  background: #f1f5f9;
+}
+
+.copy-icon {
+  color: #4f46e5;
+  font-size: 1.1rem;
+}
+
+.copy-icon.success {
+  color: #10b981;
 }
 
 @keyframes slideUp {

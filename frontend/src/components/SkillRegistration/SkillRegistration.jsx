@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import { registerForSkill } from "../services/skillService";
 import { skillRegistration } from "../../apis/auth";
 import { toast } from "react-toastify";
-import { FiUploadCloud, FiCheckCircle } from "react-icons/fi";
+import { FiUploadCloud, FiCopy, FiCheck } from 'react-icons/fi'; 
 import "./SkillRegistration.css";
 import SuccessModal from "./SuccessModal";
 
@@ -18,6 +18,15 @@ const SkillRegistration = () => {
   const [receipt, setReceipt] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [registeredName, setRegisteredName] = useState("");
+  const [copied, setCopied] = useState(false);
+  const accountNo = "2119341001";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(accountNo);
+    setCopied(true);
+    toast.success("Account number copied!");
+    setTimeout(() => setCopied(false), 2000); // Reset icon after 2 seconds
+  };
 
   const handleFileChange = (e) => {
     setReceipt(e.target.files[0]);
@@ -177,7 +186,41 @@ const SkillRegistration = () => {
               <option value="Web Designs">Web Designs</option>
               <option value="UI/UX Design">UI/UX Design</option>
               <option value="Music">Music</option>
+              <option value="Hair making">Hair making</option>
+              <option value="Catering">Catering</option>
+              <option value="Fashion design">Fashion design</option>
             </select>
+          </div>
+
+          <div className="payment-info-card">
+            <h3>Payment Details</h3>
+            <p className="amount-text">
+              Registration Fee: <span>₦10,000</span>
+            </p>
+
+            <div className="account-details">
+              <div className="detail-row">
+                <span className="label">Bank:</span>
+                <span className="value">UBA</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Account Name:</span>
+                <span className="value">
+                  CATHOLIC CHURCH OF THE HOLY SPIRIT - DON BOSCO YOUTH CENTRE
+                </span>
+              </div>
+              <div className="detail-row copy-row">
+                <span className="label">Account Number:</span>
+                <div className="copy-box" onClick={handleCopy}>
+                  <span className="value">{accountNo}</span>
+                  {copied ? (
+                    <FiCheck className="copy-icon success" />
+                  ) : (
+                    <FiCopy className="copy-icon" />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="file-upload">
