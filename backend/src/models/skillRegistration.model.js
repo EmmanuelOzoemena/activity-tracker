@@ -15,35 +15,31 @@ const skillRegistrationSchema = new Schema(
 
     hasKids: {
       type: String,
+      enum: ["Yes", "No"],
       default: "No",
     },
 
     kidsCount: {
-      type: String,
+      type: Number,
       default: 0,
+      min: 0,
     },
 
     isSponsoring: {
       type: String,
+      enum: ["Yes", "No"],
       default: "No",
     },
 
-    sponsorCount: {
+   sponsorCount: {
       type: Number,
       default: 0,
+      min: 0,
     },
 
     skillType: {
       type: String,
-      required: true,
-      enum: [
-        "Web Designs",
-        "UI/UX Design",
-        "Music",
-        "Hair making",
-        "Catering",
-        "Fashion design",
-      ],
+      default: "N/A", 
     },
 
     paymentReceiptUrl: {

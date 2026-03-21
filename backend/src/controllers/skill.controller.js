@@ -2,8 +2,15 @@ const SkillRegistration = require("../models/skillRegistration.model");
 
 const registerSkill = async (req, res) => {
   try {
-    const { firstName, lastName, email, dob, skillType, phoneNumber } =
-      req.body;
+    const {
+      fullName,
+      phoneNumber,
+      hasKids,
+      kidsCount,
+      isSponsoring,
+      sponsorCount,
+      skillType,
+    } = req.body;
 
     // Multer-Cloudinary adds 'file' to the request object
     if (!req.file) {
@@ -11,16 +18,21 @@ const registerSkill = async (req, res) => {
     }
 
     const newRegistration = new SkillRegistration({
-      firstName,
-      lastName,
-      email,
-      dob,
-      skillType,
+      fullName,
       phoneNumber,
-      paymentReceiptUrl: req.file.path, // The Cloudinary URL
-      cloudinaryId: req.file.filename, // The ID for the image
+      hasKids,
+      // Convert to Number to ensure database consistency
+      kidsCount: hasKids === "Yes" ? Number(kidsCount) : 0,
+      isSponsoring,
+      sponsorCount: isSponsoring === "Yes" ? Number(sponsorCount) : 0,
+      // skillType will be saved as provided (or null/empty if group registration)
+      skillType:
+        hasKids === "Yes" || isSponsoring === "Yes"
+          ? "Group/Sponsor"
+          : skillType,
+      paymentReceiptUrl: req.file.path,
+      cloudinaryId: req.file.filename,
     });
-
     await newRegistration.save();
     res
       .status(201)
@@ -33,10 +45,13 @@ const registerSkill = async (req, res) => {
 
 const getAllRegistrations = async (req, res) => {
   try {
-    const registrations = await SkillRegistration.find();
+    // Sorting by newest first so to see the latest registrations at the top
+    const registrations = await SkillRegistration.find().sort({
+      createdAt: -1,
+    });
     res.status(200).json({ data: registrations });
   } catch (error) {
-    console.error(error);
+    console.error("Fetch Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
