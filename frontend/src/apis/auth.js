@@ -54,21 +54,27 @@ export const skillRegistration = async (data) => {
     // Create FormData instance
     const formData = new FormData();
 
-    formData.append("firstName", data.firstName);
-    formData.append("lastName", data.lastName);
-    formData.append("email", data.email);
-    formData.append("dob", data.dob);
-    // formData.append("gender", data.gender);
-    formData.append("skillType", data.skillType);
+    // New Fields
+    formData.append("fullName", data.fullName);
     formData.append("phoneNumber", data.phoneNumber);
-    // Append the file (The key 'receipt' must match upload.single('receipt') on backend)
+    formData.append("hasKids", data.hasKids);
+    formData.append("kidsCount", data.kidsCount);
+    formData.append("isSponsoring", data.isSponsoring);
+    formData.append("sponsorCount", data.sponsorCount);
+    formData.append("skillType", data.skillType);
+
+    // The File
     formData.append("receipt", data.receipt);
 
-    const res = await axios.post(`https://api-activity-tracker.onrender.com/skill`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
+    const res = await axios.post(
+      `https://api-activity-tracker.onrender.com/skill`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
 
     return res;
   } catch (error) {
@@ -79,12 +85,14 @@ export const skillRegistration = async (data) => {
 // Get all skill registration details
 export const getAllRegistrations = async () => {
   try {
-    const res = await axios.get(`https://api-activity-tracker.onrender.com/skill`);
-  
-    return Array.isArray(res.data) ? res.data : res.data.data; 
+    const res = await axios.get(
+      `https://api-activity-tracker.onrender.com/skill`,
+    );
+
+    return Array.isArray(res.data) ? res.data : res.data.data;
   } catch (error) {
     console.error("Fetch Error:", error);
-    return []; 
+    return [];
   }
 };
 
