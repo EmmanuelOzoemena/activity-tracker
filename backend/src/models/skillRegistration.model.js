@@ -3,35 +3,47 @@ const Schema = mongoose.Schema;
 
 const skillRegistrationSchema = new Schema(
   {
-    firstName: {
+    fullName: {
       type: String,
       required: true,
-    },
-
-    lastName: {
-      type: String,
-      required: true,
-    },
-
-    email: {
-      type: String,
-      required: true,
-    },
-
-    dob: {
-      type: Date,
-      required: true,
-    },
-
-    skillType: {
-      type: String,
-      required: true,
-      enum: ["Web Designs", "UI/UX Design", "Music", "Hair making", "Catering", "Fashion design"],
     },
 
     phoneNumber: {
       type: String,
       required: true,
+    },
+
+    hasKids: {
+      type: String,
+      default: "No",
+    },
+
+    kidsCount: {
+      type: String,
+      default: 0,
+    },
+
+    isSponsoring: {
+      type: String,
+      default: "No",
+    },
+
+    sponsorCount: {
+      type: Number,
+      default: 0,
+    },
+
+    skillType: {
+      type: String,
+      required: true,
+      enum: [
+        "Web Designs",
+        "UI/UX Design",
+        "Music",
+        "Hair making",
+        "Catering",
+        "Fashion design",
+      ],
     },
 
     paymentReceiptUrl: {

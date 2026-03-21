@@ -2,16 +2,16 @@ import React, { useState } from "react";
 // import { registerForSkill } from "../services/skillService";
 import { skillRegistration } from "../../apis/auth";
 import { toast } from "react-toastify";
-import { FiUploadCloud, FiCopy, FiCheck } from 'react-icons/fi'; 
+import { FiUploadCloud, FiCopy, FiCheck } from "react-icons/fi";
 import "./SkillRegistration.css";
 import SuccessModal from "./SuccessModal";
 
 const SkillRegistration = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [hasKids, setHasKids] = useState("No");
+  const [kidsCount, setKidsCount] = useState("");
+  const [isSponsoring, setIsSponsoring] = useState("No");
+  const [sponsorCount, setSponsorCount] = useState("");
   const [skillType, setSkillType] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,6 +20,9 @@ const SkillRegistration = () => {
   const [registeredName, setRegisteredName] = useState("");
   const [copied, setCopied] = useState(false);
   const accountNo = "2119341001";
+
+  // Disable Skill Select if they are a Parent or a Sponsor
+  const isGroupRegistration = hasKids === "Yes" || isSponsoring === "Yes";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(accountNo);
@@ -35,16 +38,7 @@ const SkillRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !dob ||
-      !gender ||
-      !skillType ||
-      !phoneNumber ||
-      !receipt
-    ) {
+    if (!fullName || !skillType || !phoneNumber || !receipt) {
       return toast.error("All fields are required");
     }
 
@@ -52,11 +46,7 @@ const SkillRegistration = () => {
 
     try {
       const registrationData = {
-        firstName,
-        lastName,
-        email,
-        dob,
-        // gender,
+        fullName,
         skillType,
         phoneNumber,
         receipt,
@@ -65,15 +55,11 @@ const SkillRegistration = () => {
       const response = await skillRegistration(registrationData);
 
       if (response?.status === 201) {
-        setRegisteredName(firstName);
+        setRegisteredName(fullName);
         setIsModalOpen(true);
 
         // Clear form fields
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setDob("");
-        setGender("");
+        setFullName("");
         setSkillType("");
         setPhoneNumber("");
         setReceipt(null);
@@ -95,103 +81,146 @@ const SkillRegistration = () => {
         <h2>Don Bosco Weekend Skills Registration</h2>
         {/* <p>Join us this Sunday to learn a new craft!</p> */}
 
-        <form onSubmit={handleSubmit} className="skill-form" noValidate>
+        <form onSubmit={handleSubmit} className="skill-form">
+          {/* Full Name */}
           <div className="input-group">
-            <label className="field-label">First Name</label>
+            <label className="field-label">Full Name</label>
             <input
               type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="e.g. Emmanuel"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="Enter your full name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               required
             />
           </div>
 
+          {/* WhatsApp Number */}
           <div className="input-group">
-            <label className="field-label">Last Name</label>
+            <label className="field-label">Phone Number (WhatsApp)</label>
             <input
               type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <label className="field-label">Email Address</label>
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <label className="field-label">Date of Birth</label>
-            <input
-              type="date"
-              name="dob"
-              // placeholder=""
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <label className="field-label">Gender</label>
-            <select
-              name="gender"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              required
-            >
-              <option value="">Select your gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-
-          <div className="input-group">
-            <label className="field-label">Phone Number</label>
-
-            <input
-              type="text"
-              name="phoneNumber"
-              placeholder="Phone Number"
+              placeholder="e.g. 08012345678"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
           </div>
 
-          <div className="input-group">
-            <label className="field-label">Skill to learn</label>
+          {/* Parent Question */}
+          <div className="radio-section">
+            <label className="field-label">
+              Are you registering your children?
+            </label>
+            <div className="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  value="Yes"
+                  checked={hasKids === "Yes"}
+                  onChange={() => setHasKids("Yes")}
+                />{" "}
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="No"
+                  checked={hasKids === "No"}
+                  onChange={() => {
+                    setHasKids("No");
+                    setKidsCount("");
+                  }}
+                />{" "}
+                No
+              </label>
+            </div>
+          </div>
 
+          {hasKids === "Yes" && (
+            <div className="input-group animate-in">
+              <label className="field-label">How many children?</label>
+              <input
+                type="number"
+                value={kidsCount}
+                onChange={(e) => setKidsCount(e.target.value)}
+                placeholder="Enter number of kids"
+                required
+              />
+            </div>
+          )}
+
+          {/* Sponsor Question */}
+          <div className="radio-section">
+            <label className="field-label">
+              Would you like to donate or sponsor a child?
+            </label>
+            <div className="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  value="Yes"
+                  checked={isSponsoring === "Yes"}
+                  onChange={() => setIsSponsoring("Yes")}
+                />{" "}
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="No"
+                  checked={isSponsoring === "No"}
+                  onChange={() => {
+                    setIsSponsoring("No");
+                    setSponsorCount("");
+                  }}
+                />{" "}
+                No
+              </label>
+            </div>
+          </div>
+
+          {isSponsoring === "Yes" && (
+            <div className="input-group animate-in">
+              <label className="field-label">
+                How many children are you sponsoring?
+              </label>
+              <input
+                type="number"
+                value={sponsorCount}
+                onChange={(e) => setSponsorCount(e.target.value)}
+                placeholder="Enter number of children"
+                required
+              />
+            </div>
+          )}
+
+          {/* Skill Selection - Disabled if Parent/Sponsor */}
+          <div className="input-group">
+            <label className="field-label">Skill to Learn</label>
             <select
-              name="skillType"
               value={skillType}
               onChange={(e) => setSkillType(e.target.value)}
-              required
+              disabled={isGroupRegistration}
+              className={isGroupRegistration ? "disabled-input" : ""}
+              required={!isGroupRegistration}
             >
-              <option value="">Select a Skill</option>
+              <option value="">
+                {isGroupRegistration
+                  ? "N/A (Group/Sponsor Payment)"
+                  : "Select a Skill"}
+              </option>
               <option value="Web Designs">Web Designs</option>
               <option value="UI/UX Design">UI/UX Design</option>
               <option value="Music">Music</option>
-              <option value="Hair making">Hair making</option>
-              <option value="Catering">Catering</option>
-              <option value="Fashion design">Fashion design</option>
             </select>
+            {isGroupRegistration && (
+              <small className="helper-text">
+                Skill selection is disabled for group payments.
+              </small>
+            )}
           </div>
 
+          {/* Payment Card Info */}
           <div className="payment-info-card">
             <h3>Payment Details</h3>
             <p className="amount-text">
@@ -223,6 +252,7 @@ const SkillRegistration = () => {
             </div>
           </div>
 
+          {/* Upload payment */}
           <div className="file-upload">
             <label htmlFor="receipt-upload" className="file-label">
               <FiUploadCloud className="upload-icon" />
