@@ -49,32 +49,58 @@ export const loginYouth = async (email, password) => {
 };
 
 // Register for a skill
+// export const skillRegistration = async (data) => {
+//   try {
+//     // Create FormData instance
+//     const formData = new FormData();
+
+//     // New Fields
+//     formData.append("fullName", data.fullName);
+//     formData.append("phoneNumber", data.phoneNumber);
+//     formData.append("hasKids", data.hasKids);
+//     formData.append("kidsCount", data.kidsCount);
+//     formData.append("isSponsoring", data.isSponsoring);
+//     formData.append("sponsorCount", data.sponsorCount);
+//     formData.append("skillType", data.skillType);
+
+//     // The File
+//     formData.append("receipt", data.receipt);
+
+//     const res = await axios.post(
+//       `https://api-activity-tracker.onrender.com/skill`,
+//       formData,
+//       {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       },
+//     );
+
+//     return res;
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
+
 export const skillRegistration = async (data) => {
   try {
-    // Create FormData instance
-    const formData = new FormData();
+  const formData = new FormData();
 
-    // New Fields
-    formData.append("fullName", data.fullName);
-    formData.append("phoneNumber", data.phoneNumber);
-    formData.append("hasKids", data.hasKids);
-    formData.append("kidsCount", data.kidsCount);
-    formData.append("isSponsoring", data.isSponsoring);
-    formData.append("sponsorCount", data.sponsorCount);
-    formData.append("skillType", data.skillType);
-
-    // The File
+    // Use logical OR (||) to provide defaults if the value is missing
+    formData.append("fullName", data.fullName || "");
+    formData.append("phoneNumber", data.phoneNumber || "");
+    formData.append("hasKids", data.hasKids || "No");
+    formData.append("kidsCount", data.kidsCount || 0);
+    formData.append("isSponsoring", data.isSponsoring || "No");
+    formData.append("sponsorCount", data.sponsorCount || 0);
+    formData.append("skillType", data.skillType || "N/A");
+    
+    // Ensure the key matches what Multer expects on the backend
     formData.append("receipt", data.receipt);
 
-    const res = await axios.post(
-      `https://api-activity-tracker.onrender.com/skill`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    );
+    const res = await axios.post(`https://api-activity-tracker.onrender.com/skill`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
     return res;
   } catch (error) {

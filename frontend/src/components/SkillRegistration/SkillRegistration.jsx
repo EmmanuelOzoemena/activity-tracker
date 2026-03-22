@@ -9,9 +9,9 @@ import SuccessModal from "./SuccessModal";
 const SkillRegistration = () => {
   const [fullName, setFullName] = useState("");
   const [hasKids, setHasKids] = useState("No");
-  const [kidsCount, setKidsCount] = useState("");
+  const [kidsCount, setKidsCount] = useState(0);
   const [isSponsoring, setIsSponsoring] = useState("No");
-  const [sponsorCount, setSponsorCount] = useState("");
+  const [sponsorCount, setSponsorCount] = useState(0);
   const [skillType, setSkillType] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,11 +45,25 @@ const SkillRegistration = () => {
     setLoading(true);
 
     try {
+      // const registrationData = {
+      //   fullName,
+      //   skillType,
+      //   phoneNumber,
+      //   receipt,
+      // };
+
       const registrationData = {
-        fullName,
-        skillType,
+        fullName, // make sure this variable isn't undefined
         phoneNumber,
-        receipt,
+        hasKids,
+        kidsCount: kidsCount || 0,
+        isSponsoring,
+        sponsorCount: sponsorCount || 0,
+        skillType:
+          hasKids === "Yes" || isSponsoring === "Yes"
+            ? "Group/Sponsor"
+            : skillType,
+        receipt, // This is your file object
       };
 
       const response = await skillRegistration(registrationData);
