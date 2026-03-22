@@ -38,7 +38,7 @@ const SkillRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!fullName || !skillType || !phoneNumber || !receipt) {
+    if (!fullName || !phoneNumber || !receipt) {
       return toast.error("All fields are required");
     }
 
