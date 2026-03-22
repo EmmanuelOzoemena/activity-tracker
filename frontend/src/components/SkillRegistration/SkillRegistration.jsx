@@ -226,6 +226,9 @@ const SkillRegistration = () => {
               <option value="Web Designs">Web Designs</option>
               <option value="UI/UX Design">UI/UX Design</option>
               <option value="Music">Music</option>
+               <option value="Hair Making">Hair Making</option>
+              <option value="Catering">Catering</option>
+               <option value="Fashion Design">Fashion Design</option>
             </select>
             {isGroupRegistration && (
               <small className="helper-text">
