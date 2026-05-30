@@ -196,7 +196,7 @@ const SkillRegistration = () => {
           {isSponsoring === "Yes" && (
             <div className="input-group animate-in">
               <label className="field-label">
-                How many child are you sponsoring?
+                How many children are you sponsoring?
               </label>
               <input
                 type="number"
