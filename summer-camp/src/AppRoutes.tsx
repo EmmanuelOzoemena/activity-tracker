@@ -6,7 +6,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 export default function AppRoutes() {
   return (
     <Routes>
-      \
+      
       <Route path="/" element={<App />} />
       {/* Admin Dashboard Table View */}
       <Route path="/admin" element={<AdminDashboard />} />
