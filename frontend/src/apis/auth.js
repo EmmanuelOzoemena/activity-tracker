@@ -33,11 +33,14 @@ export const registerYouth = async (
 // Login Youth
 export const loginYouth = async (email, password) => {
   try {
-    const res = await axios.post(`${API_BASE_URL}/youths/login`, { email, password });
-    
+    const res = await axios.post(`${API_BASE_URL}/youths/login`, {
+      email,
+      password,
+    });
+
     if (res.data.token) {
-      localStorage.setItem('token', res.data.token); // Save token for future requests
-      localStorage.setItem('user', JSON.stringify(res.data.user)); // Save user info
+      localStorage.setItem("token", res.data.token); // Save token for future requests
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // Save user info
     }
     return res;
   } catch (error) {
@@ -45,6 +48,79 @@ export const loginYouth = async (email, password) => {
   }
 };
 
+// Register for a skill
+// export const skillRegistration = async (data) => {
+//   try {
+//     // Create FormData instance
+//     const formData = new FormData();
+
+//     // New Fields
+//     formData.append("fullName", data.fullName);
+//     formData.append("phoneNumber", data.phoneNumber);
+//     formData.append("hasKids", data.hasKids);
+//     formData.append("kidsCount", data.kidsCount);
+//     formData.append("isSponsoring", data.isSponsoring);
+//     formData.append("sponsorCount", data.sponsorCount);
+//     formData.append("skillType", data.skillType);
+
+//     // The File
+//     formData.append("receipt", data.receipt);
+
+//     const res = await axios.post(
+//       `https://api-activity-tracker.onrender.com/skill`,
+//       formData,
+//       {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       },
+//     );
+
+//     return res;
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
+
+export const skillRegistration = async (data) => {
+  try {
+  const formData = new FormData();
+
+    // Use logical OR (||) to provide defaults if the value is missing
+    formData.append("fullName", data.fullName || "");
+    formData.append("phoneNumber", data.phoneNumber || "");
+    formData.append("hasKids", data.hasKids || "No");
+    formData.append("kidsCount", data.kidsCount || 0);
+    formData.append("isSponsoring", data.isSponsoring || "No");
+    formData.append("sponsorCount", data.sponsorCount || 0);
+    formData.append("skillType", data.skillType || "N/A");
+    
+    // Ensure the key matches what Multer expects on the backend
+    formData.append("receipt", data.receipt);
+
+    const res = await axios.post(`https://api-activity-tracker.onrender.com/skill`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+// Get all skill registration details
+export const getAllRegistrations = async () => {
+  try {
+    const res = await axios.get(
+      `https://api-activity-tracker.onrender.com/skill`,
+    );
+
+    return Array.isArray(res.data) ? res.data : res.data.data;
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    return [];
+  }
+};
 
 // Get a single youth by ID
 export const getYouthById = async (id) => {
@@ -120,7 +196,7 @@ export const markAttendance = async (youthId, activityId, status) => {
   }
 };
 
-// Update attendance status for a youth in an 
+// Update attendance status for a youth in an
 export const updateAttendance = async (id, status) => {
   try {
     const res = await axios.put(`${API_BASE_URL}/attendance/${id}`, { status });
@@ -134,12 +210,12 @@ export const updateAttendance = async (id, status) => {
 // Stats calculation for a given month and year
 export const getTotalStats = async (month, year) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/stats/monthly`, {  
+    const res = await axios.get(`${API_BASE_URL}/stats/monthly`, {
       params: { month, year },
     });
     return res;
   } catch (error) {
     console.error("ERROR fetching monthly stats:", error);
     return error?.response;
-  } 
+  }
 };

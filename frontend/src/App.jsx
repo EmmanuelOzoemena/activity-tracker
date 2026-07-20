@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLocation, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Registration from "./components/Registration/Registration";
@@ -9,12 +10,18 @@ import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Login from "./components/Login/Login";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import SkillRegistration from "./components/SkillRegistration/SkillRegistration";
+import RegDetails from "./components/RegDetails/RegDetails";
+
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
 
-  const standalonePages = ["/login", "/register"];
+  const standalonePages = ["/login", "/register", "/skill-registration"];
   const isStandalone = standalonePages.includes(location.pathname);
+
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   if (isStandalone) {
     return (
@@ -22,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
+          <Route path="/skill-registration" element={<SkillRegistration />} />
         </Routes>
         {/* ToastContainer here so alerts work on login/register too */}
         <ToastContainer position="top-right" autoClose={3000} />
@@ -31,14 +39,15 @@ function App() {
 
   return (
     <div className="app-wrapper">
-      <Header />
+  <Header toggleSidebar={toggleSidebar} />
 
       <div className="main-layout">
-        <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
         <main className="content-area">
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            {/* <Route path="/skill-registration" element={<SkillRegistration />} /> */}
 
             {/* <Route path="/admin" element={<AdminPanel />} /> */}
             <Route
@@ -46,6 +55,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["admin"]}>
                   <AdminPanel />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/registrations"
+              element={
+                <ProtectedRoute role="admin">
+                  <RegDetails />
                 </ProtectedRoute>
               }
             />

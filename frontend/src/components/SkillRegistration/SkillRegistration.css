@@ -1,0 +1,307 @@
+.skill-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.skill-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.skill-card h2 {
+  text-align: center;
+}
+
+.skill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.skill-form input,
+.skill-form select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.file-upload {
+  position: relative;
+  border: 2px dashed #4f46e5;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.file-upload:hover {
+  background: #f5f3ff;
+}
+
+.file-upload input {
+  display: none; /* Hide the ugly default button */
+}
+
+/* Container to keep label and input stacked */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Space between label and input */
+  margin-bottom: 5px;
+}
+
+/* Styling ONLY the label */
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569; /* Nice slate grey */
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin-left: 2px;
+  text-align: left;
+}
+
+/* Optional: Add a red asterisk for required fields via CSS */
+.field-label::after {
+  content: " *";
+  color: #ef4444;
+}
+
+.file-label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4f46e5;
+}
+
+.upload-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.submit-btn {
+  background: #4f46e5;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background: #94a3b8;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Darkens the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px); /* Modern blur effect */
+}
+
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+.payment-info-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.payment-info-card h3 {
+  font-size: 1rem;
+  color: #1e293b;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 5px;
+}
+
+.amount-text {
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 10px;
+}
+
+.amount-text span {
+  color: #10b981; /* Green for the price */
+  font-size: 1.1rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.detail-row .label {
+  color: #64748b;
+  flex: 1;
+}
+
+.detail-row .value {
+  color: #1e293b;
+  font-weight: 700;
+  flex: 2;
+  text-align: right;
+}
+
+.copy-row {
+  align-items: center;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px dashed #94a3b8;
+}
+
+.copy-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.copy-box:hover {
+  background: #f1f5f9;
+}
+
+.copy-icon {
+  color: #4f46e5;
+  font-size: 1.1rem;
+}
+
+.copy-icon.success {
+  color: #10b981;
+}
+
+.disabled-input {
+  background-color: #e2e8f0 !important;
+  cursor: not-allowed;
+  color: #94a3b8;
+}
+
+.helper-text {
+  color: #6366f1;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin: 10px 0;
+}
+
+.animate-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-icon {
+  font-size: 4rem;
+  color: #10b981; 
+  margin-bottom: 20px;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  color: #4f46e5;
+}
+
+.modal-subtext {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.modal-close-btn {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  opacity: 0.7;
+}
+
+.type-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.type-badge.sponsor { background: #dcfce7; color: #166534; }
+.type-badge.parent { background: #fef9c3; color: #854d0e; }
+.type-badge.individual { background: #f1f5f9; color: #475569; }
+
+.date-cell {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+}
