@@ -11,6 +11,9 @@ const attendanceRoutes = require("./routes/attendance.routes");
 const statRoutes = require("./routes/stat.routes");
 const skillRoutes = require("./routes/skill.routes")
 
+const campRoutes = require('./camp.route.js');
+
+
 const app = express();
 
 
@@ -36,6 +39,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 // Mongoose connection
 const port = process.env.PORT || 3000;
@@ -64,3 +68,6 @@ app.use("/activities", activityRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/stats", statRoutes);
 app.use("/skill", skillRoutes);
+
+// Mount routes
+app.use('/camp', campRoutes);
