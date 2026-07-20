@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { RegistrationState } from "../types/form";
+import type{ RegistrationState } from "../types/form";
 
 const initialParent = {
   parentName: "",
