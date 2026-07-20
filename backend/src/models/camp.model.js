@@ -15,7 +15,7 @@ const childSchema = new mongoose.Schema({
   gender: {
     type: String,
     enum: ["male", "female"],
-    required: true,
+    required: false, // Set to false if gender isn't requested in frontend form
   },
   selectedActivities: [
     {
@@ -74,7 +74,11 @@ const campRegistrationSchema = new mongoose.Schema(
   },
 );
 
-export const CampRegistration = mongoose.model(
+const CampRegistration = mongoose.model(
   "CampRegistration",
   campRegistrationSchema,
 );
+
+module.exports = {
+  CampRegistration,
+};

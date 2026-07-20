@@ -11,7 +11,7 @@ const attendanceRoutes = require("./routes/attendance.routes");
 const statRoutes = require("./routes/stat.routes");
 const skillRoutes = require("./routes/skill.routes")
 
-const campRoutes = require('./camp.route.js');
+const campRoutes = require('./routes/camp.routes.js');
 
 
 const app = express();

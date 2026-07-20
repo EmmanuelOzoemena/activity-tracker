@@ -4,7 +4,7 @@ const multer = require("multer");
 const {
   registerForCamp,
   getAllRegistrations,
-} = require("./camp.controller.js");
+} = require("../controllers/camp.controller.js");
 
 const router = express.Router();
 
@@ -38,4 +38,4 @@ const upload = multer({
 router.post("/register", upload.single("receipt"), registerForCamp);
 router.get("/registrations", getAllRegistrations);
 
-export default router;
+module.exports = router;

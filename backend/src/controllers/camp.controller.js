@@ -1,21 +1,19 @@
-const { CampRegistration } = require("./camp.model.js");
+const { CampRegistration } = require("../models/camp.model.js");
 
 /**
  * @desc   Register children for Summer Camp
  * @route  POST /api/camp/register
  * @access Public
  */
-export const registerForCamp = async (req, res) => {
+const registerForCamp = async (req, res) => {
   try {
     const { parentName, phone, whatsapp, email, address, children } = req.body;
 
     // 1. Basic validation
     if (!parentName || !phone || !email || !children) {
-      return res
-        .status(400)
-        .json({
-          message: "Please provide all required parent and child fields.",
-        });
+      return res.status(400).json({
+        message: "Please provide all required parent and child fields.",
+      });
     }
 
     // Ensure children data exists
@@ -33,7 +31,7 @@ export const registerForCamp = async (req, res) => {
       return res.status(400).json({ message: "Payment receipt is required." });
     }
 
-    // Receipt URL path (adjust depending on local multer storage or Cloudinary/S3 middleware)
+    // Receipt URL path
     const receiptUrl = req.file.path || `/uploads/${req.file.filename}`;
 
     // 3. Calculate fees server-side based on flyer logic
@@ -59,14 +57,14 @@ export const registerForCamp = async (req, res) => {
       receiptUrl,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Registration submitted successfully!",
       data: registration,
     });
   } catch (error) {
     console.error("Camp Registration Error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Failed to process registration.",
       error: error.message,
@@ -79,19 +77,24 @@ export const registerForCamp = async (req, res) => {
  * @route  GET /api/camp/registrations
  * @access Private / Admin
  */
-export const getAllRegistrations = async (req, res) => {
+const getAllRegistrations = async (req, res) => {
   try {
     const registrations = await CampRegistration.find().sort({ createdAt: -1 });
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       count: registrations.length,
       data: registrations,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error fetching registrations",
       error: error.message,
     });
   }
+};
+
+module.exports = {
+  registerForCamp,
+  getAllRegistrations,
 };
