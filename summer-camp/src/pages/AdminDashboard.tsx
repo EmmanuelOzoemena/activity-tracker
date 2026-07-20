@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { campService } from "../services/campService";
 import {
   Users,
   Search,
   ExternalLink,
   Loader2,
-  Calendar,
   CheckCircle2,
   Clock,
   XCircle,
