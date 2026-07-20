@@ -18,7 +18,6 @@ export const campService = {
   }: RegistrationPayload) {
     const formData = new FormData();
 
-    
     // Append parent fields
     formData.append("parentName", parent.parentName);
     formData.append("phone", parent.phone);
@@ -39,5 +38,10 @@ export const campService = {
     });
 
     return response.data;
+  },
+
+  getAllRegistrations: async () => {
+    const response = await apiClient.get("/camp/registrations");
+    return response.data; 
   },
 };
