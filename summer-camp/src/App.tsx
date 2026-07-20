@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRegistrationStore } from "./store/useRegistrationStore";
+import { campService } from "./services/campService";
 import {
   Plus,
   Trash2,
@@ -11,6 +12,8 @@ import {
   Copy,
   Check,
   Sparkles,
+  Loader2,
+  FileCheck,
 } from "lucide-react";
 
 const AVAILABLE_ACTIVITIES = [
@@ -26,6 +29,7 @@ export default function App() {
   const {
     parent,
     children,
+    paymentProof,
     setParentInfo,
     addChild,
     removeChild,
@@ -33,8 +37,11 @@ export default function App() {
     setPaymentProof,
     calculateTotalFee,
   } = useRegistrationStore();
+
   const [submitted, setSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleCopyAccountNumber = () => {
     navigator.clipboard.writeText("2119341001");
@@ -42,9 +49,32 @@ export default function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setErrorMessage(null);
+
+    if (!paymentProof) {
+      setErrorMessage("Please upload a payment receipt before submitting.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await campService.submitRegistration({
+        parent,
+        children,
+        paymentProof,
+      });
+      setSubmitted(true);
+    } catch (error: any) {
+      console.error("Submission Error:", error);
+      const message =
+        error.response?.data?.message ||
+        "Failed to submit registration. Please check your connection and try again.";
+      setErrorMessage(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -391,11 +421,16 @@ export default function App() {
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
                 Upload Payment Receipt / Proof of Transfer
               </label>
-              <div className="border-2 border-dashed border-gray-200 hover:border-brand-600 rounded-2xl p-6 text-center transition duration-200 bg-gray-50/30">
+              <div
+                className={`border-2 border-dashed rounded-2xl p-6 text-center transition duration-200 ${
+                  paymentProof
+                    ? "border-emerald-500 bg-emerald-50/30"
+                    : "border-gray-200 hover:border-brand-600 bg-gray-50/30"
+                }`}
+              >
                 <input
                   type="file"
                   accept="image/*,.pdf"
-                  required
                   onChange={(e) =>
                     setPaymentProof(e.target.files ? e.target.files[0] : null)
                   }
@@ -406,23 +441,52 @@ export default function App() {
                   htmlFor="receipt-upload"
                   className="cursor-pointer flex flex-col items-center gap-2"
                 >
-                  <div className="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center text-brand-700">
-                    <Upload className="w-5 h-5" />
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      paymentProof
+                        ? "bg-emerald-100 text-emerald-600"
+                        : "bg-brand-50 text-brand-700"
+                    }`}
+                  >
+                    {paymentProof ? (
+                      <FileCheck className="w-5 h-5" />
+                    ) : (
+                      <Upload className="w-5 h-5" />
+                    )}
                   </div>
                   <span className="text-xs text-gray-600 font-semibold">
-                    Click to upload receipt image or PDF
+                    {paymentProof
+                      ? `Selected: ${paymentProof.name}`
+                      : "Click to upload receipt image or PDF"}
                   </span>
                 </label>
               </div>
             </div>
           </section>
 
+          {/* Error Banner */}
+          {errorMessage && (
+            <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl font-medium">
+              {errorMessage}
+            </div>
+          )}
+
           {/* Submit Action */}
           <button
             type="submit"
-            className="w-full py-4 bg-brand-700 hover:bg-brand-800 text-white text-base font-extrabold rounded-2xl shadow-lg hover:shadow-xl transition duration-200 cursor-pointer active:scale-[0.99]"
+            disabled={loading}
+            className="w-full py-4 bg-brand-700 hover:bg-brand-800 disabled:bg-brand-400 text-white text-base font-extrabold rounded-2xl shadow-lg hover:shadow-xl transition duration-200 cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99]"
           >
-            Complete Registration (₦{calculateTotalFee().toLocaleString()})
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Submitting Registration...</span>
+              </>
+            ) : (
+              <span>
+                Complete Registration (₦{calculateTotalFee().toLocaleString()})
+              </span>
+            )}
           </button>
 
           {/* Contact Details */}
