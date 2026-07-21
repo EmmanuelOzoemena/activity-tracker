@@ -9,7 +9,7 @@ import {
   Clock,
   XCircle,
   FileText,
-  DollarSign,
+  // DollarSign,
   ArrowLeft,
 } from "lucide-react";
 
@@ -157,7 +157,24 @@ export default function AdminDashboard() {
 
           <div className="bg-white p-5 rounded-2xl border border-brand-100 shadow-xs flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold">
-              <DollarSign className="w-6 h-6" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-6 h-6"
+              >
+                <path d="M6 3v18" />
+                <path d="M18 3v18" />
+                <path d="M6 18L18 6" />
+                <path d="M4 10h16" />
+                <path d="M4 14h16" />
+              </svg>
             </div>
             <div>
               <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">
