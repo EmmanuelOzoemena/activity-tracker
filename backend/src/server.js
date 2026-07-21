@@ -21,7 +21,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:5173', 
   'https://cchs-activity-tracker.vercel.app',
-  'https://summer-camp-2026-registration.vercel.app/'
+  'https://summer-camp-2026-registration.vercel.app'
 ];
 
 app.use(cors({
